@@ -24,71 +24,154 @@
  */
 
 
-const FRESH_PRINCE_URL = "https://upload.wikimedia.org/wikipedia/en/3/33/Fresh_Prince_S1_DVD.jpg";
-const CURB_POSTER_URL = "https://m.media-amazon.com/images/M/MV5BZDY1ZGM4OGItMWMyNS00MDAyLWE2Y2MtZTFhMTU0MGI5ZDFlXkEyXkFqcGdeQXVyMDc5ODIzMw@@._V1_FMjpg_UX1000_.jpg";
-const EAST_LOS_HIGH_POSTER_URL = "https://static.wikia.nocookie.net/hulu/images/6/64/East_Los_High.jpg";
 
-// This is an array of strings (TV show titles)
-let titles = [
-    "Fresh Prince of Bel Air",
-    "Curb Your Enthusiasm",
-    "East Los High"
-];
-// Your final submission should have much more data than this, and 
-// you should use more than just an array of strings to store it all.
+const BURRITO = "img/burrito.png";
+const BURRITO_BOWL = "img/burrito_bowl.png";
+const TACOS = "img/three_tacos.png";
+
+const openShopping = document.querySelector(".shopping"),
+      closeShopping = document.querySelector(".closeShopping"),
+      body = document.querySelector("body"),
+      list= document.querySelector(".list"),
+      listCard = document.querySelector(".listCard"),
+      total = document.querySelector(".total"),
+      quantity = document.querySelector(".quantity")
 
 
-// This function adds cards the page to display the data in the array
-function showCards() {
-    const cardContainer = document.getElementById("card-container");
-    cardContainer.innerHTML = "";
-    const templateCard = document.querySelector(".card");
-    
-    for (let i = 0; i < titles.length; i++) {
-        let title = titles[i];
+openShopping.addEventListener("click", () => {
+    body.classList.add("active");
+})
 
-        // This part of the code doesn't scale very well! After you add your
-        // own data, you'll need to do something totally different here.
-        let imageURL = "";
-        if (i == 0) {
-            imageURL = FRESH_PRINCE_URL;
-        } else if (i == 1) {
-            imageURL = CURB_POSTER_URL;
-        } else if (i == 2) {
-            imageURL = EAST_LOS_HIGH_POSTER_URL;
+closeShopping.addEventListener("click", () => {
+    body.classList.remove("active")
+})
+
+//array of objects
+let products = [
+    {
+        "id": 1,
+        "name": "Burrito",
+        "image":"burrito.png", //could not use the above defined constants since this text will be parsed as the image URL
+        "price": 9.00
+    },
+    {
+        "id": 2,
+        "name": "Bowl",
+        "image":"burrito_bowl.png",
+        "price": 10.00
+    },
+    {
+        "id": 3,
+        "name": "Tacos",
+        "image":"three_tacos.png",
+        "price": 8.00
+    },
+    {
+        "id": 4,
+        "name": "Chips and Sides",
+        "image":"chips_sides.png",
+        "price": 6.00
+    },
+    {
+        "id": 5,
+        "name": "Quesadilla",
+        "image":"quesadilla.png",
+        "price": 7.00
+    },
+    {
+        "id": 6,
+        "name": "Salad",
+        "image":"salad.png",
+        "price": 9.00
+    },
+    {
+        "id": 7,
+        "name": "Lifestyle Bowl",
+        "image":"lifestyle_bowl.png",
+        "price": 10.00
+    },
+    {
+        "id": 8,
+        "name": "Kid's Meal",
+        "image":"kidsmeal.png",
+        "price": 7.00
+    },
+    {
+        "id": 9,
+        "name": "House Special Drink",
+        "image":"drinks.png",
+        "price": 3.00
+    }
+]
+
+
+let listCards = [];
+
+//initApp() will create new divs for every object in the item list
+const initApp = () => {
+    products.forEach((value, key) => {
+        let newDiv = document.createElement("div");  //.createElement a js function that can create a div or something else for me
+        newDiv.classList.add("item");
+        newDiv.innerHTML = `
+            <img src = "img/${value.image}">
+            <div class = "title">${value.name}</div>
+            <div class="price">$${value.price}.00</div>
+            <button onclick = "addToCart(${key})">Add To Cart</button>
+        `;
+        list.appendChild(newDiv)
+    })
+}
+
+initApp()
+
+const addToCart = key => { //key is the parameter to the "arrow function" - a shothand form for a js function
+    if(listCards[key] == null) {
+        listCards[key] = products[key];
+        listCards[key].quantity = 1;
+    }
+
+    reloadCart()
+}
+
+const reloadCart = () => {
+    listCard.innerHTML = "";
+    let count = 0;
+    let totalPrice= 0;
+
+    listCards.forEach((value, key) => {
+        totalPrice = totalPrice + value.price
+        count = count + value.quantity;
+
+        if(value != null) {
+            let newDiv = document.createElement("li");
+            newDiv.innerHTML = `
+                <div><img src = "img/${value.image}"></div>
+                <div class = "cardTitle">${value.name}</div>
+                <div class = "cardPrice">$${value.price}.00</div>
+
+                <div>
+                    <button style = "background-color:#8d2b0d;" class = "cardButton" onclick = "changeQuantity(${key}, ${value.quantity - 1})">-</button>
+                    <div class = "count">${value.quantity}</div>
+                    <button style = "background-color:#8d2b0d;" class = "cardButton" onclick = "changeQuantity(${key}, ${value.quantity + 1})">+</button>
+                </div>
+            `
+            listCard.appendChild(newDiv)
         }
 
-        const nextCard = templateCard.cloneNode(true); // Copy the template card
-        editCardContent(nextCard, title, imageURL); // Edit title and image
-        cardContainer.appendChild(nextCard); // Add new card to the container
+        total.innerText = "$" + totalPrice + ".00";
+        quantity.innerText = count;
+        
+    })
+}
+
+
+const changeQuantity = (key, quantity) => {
+    if(quantity == 0) {
+        delete listCards[key]
     }
-}
-
-function editCardContent(card, newTitle, newImageURL) {
-    card.style.display = "block";
-
-    const cardHeader = card.querySelector("h2");
-    cardHeader.textContent = newTitle;
-
-    const cardImage = card.querySelector("img");
-    cardImage.src = newImageURL;
-    cardImage.alt = newTitle + " Poster";
-
-    // You can use console.log to help you debug!
-    // View the output by right clicking on your website,
-    // select "Inspect", then click on the "Console" tab
-    console.log("new card:", newTitle, "- html: ", card);
-}
-
-// This calls the addCards() function when the page is first loaded
-document.addEventListener("DOMContentLoaded", showCards);
-
-function quoteAlert() {
-    console.log("Button Clicked!")
-    alert("I guess I can kiss heaven goodbye, because it got to be a sin to look this good!");
-}
-
-function removeLastCard() {
-    titles.pop(); // Remove last item in titles array
-    showCards(); // Call showCards again to refresh
+    else {
+        listCards[key].quantity = quantity;
+        listCards[key].price = quantity * products[key].price
+    }
+    reloadCart()
 }

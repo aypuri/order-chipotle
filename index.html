@@ -1,39 +1,37 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>LA TV Shows | Home</title>
-    <meta name="description" content="A Catalog of Shows Set in Los Angeles">
-    <link rel="stylesheet" href="style.css" />
-    <script type="text/javascript" src="scripts.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>Chipotle | Home</title>
+    <meta name="description" content="An online order shopping cart">
 </head>
-
 <body>
-    <header class="main-header">
-        <h1 class="title">LA TV Shows</h1>
-    </header>
-    <div id="card-container">
+    <div class="container">
         
+        <header>
+            
+            <h1><img src = "img/cmg-medallion-logo.svg">    Chipotle Online Order</h1>
+            <div class="shopping">
+                <i class="fa-solid fa-bag-shopping"></i> <!-- cart icon from font awesome-->
+                <span class="quantity">0</span>
+            </div>
+        </header>
+        <div class="list"></div>
     </div>
-    <div class="card" style="display: none;">
-        <div class="card-content">
-            <h2>TV Show Title</h2>
-            <img src="" alt="TV Show Poster">
-            <ul>
-                <li>Bullet Point 1</li>
-                <li>Bullet Point 2</li>
-                <li>Bullet Point 3</li>
-            </ul>
+
+    <div class="card">
+        <h1>Cart</h1>
+        <ul class="listCard">
+
+        </ul>
+        <div class="checkOut">
+            <div class="total">$0.00</div>
+            <div class="closeShopping">Close</div>
         </div>
     </div>
-    <div class="footer">
-        <button onclick="quoteAlert();">
-            Get A Quote!
-        </button>
-        <button onclick="removeLastCard();">
-            Remove A Card!
-        </button>
-    </div>
-</body>
 
+    <script src="scripts.js"></script>
+</body>
 </html>
