@@ -1,5 +1,7 @@
 # SEA Stage 2 - Data Catalog Project
 
+Here is the link to my website! https://aypuri.github.io/order-chipotle/
+
 This is the instructions, requirements, and starter for stage two of the Snap Engineering Academy application process.
 
 ## Your Task:
